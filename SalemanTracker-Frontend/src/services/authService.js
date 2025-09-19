@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://gurudatta-distributers.onrender.com",
+  baseURL: REACT_APP_API_URL || "http://localhost:5000/api",
   withCredentials: true,
 });
 
