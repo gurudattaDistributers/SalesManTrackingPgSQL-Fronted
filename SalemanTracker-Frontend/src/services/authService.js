@@ -2,7 +2,8 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: REACT_APP_API_URL || "http://localhost:5000/api",
+  // baseURL: REACT_APP_API_URL
+  baseURL: "https://gurudatta-distributers.onrender.com" || REACT_APP_API_URL,
   withCredentials: true,
 });
 
@@ -44,7 +45,6 @@ export const logout = async () => {
   try {
     // Call backend logout to clear session cookie
     await axiosInstance.post("/api/Auth/logout");
-    navigate("/");
     console.log("Logged out from backend successfully");
   } catch (err) {
     console.error("Backend logout failed:", err);

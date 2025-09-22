@@ -5,7 +5,6 @@ import PersonIcon from '@mui/icons-material/Person';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import HomeIcon from '@mui/icons-material/Home';
 import { motion } from 'framer-motion';
-import loginBg from '../images/login.png';
 
 const MotionBox = motion(Box);
 
@@ -64,7 +63,7 @@ const Login = () => {
         alignItems: 'center',
         justifyContent: 'center',
         px: 2,
-        backgroundImage: `linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url(${loginBg})`,
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url("https://res.cloudinary.com/dsrrvz65s/image/upload/v1758534434/login_mha0yb.png")`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',

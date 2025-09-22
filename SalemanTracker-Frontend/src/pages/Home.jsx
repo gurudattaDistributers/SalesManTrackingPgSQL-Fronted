@@ -8,9 +8,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-// Import your images
-import HomeImg from "../images/Home.png";
-import Logo from "../images/logo.png";
+
 
 const Home = () => {
   const navigate = useNavigate();
@@ -48,7 +46,7 @@ const Home = () => {
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             <Box
               component="img"
-              src={Logo}
+              src={"https://res.cloudinary.com/dsrrvz65s/image/upload/v1758534431/logo_bcwjge.png"}
               alt="Logo"
               sx={{
                 width: { xs: 35, sm: 45 },
@@ -102,7 +100,7 @@ const Home = () => {
       <Box
         sx={{
           flexGrow: 1,
-          backgroundImage: `url(${HomeImg})`,
+          backgroundImage: `url("https://res.cloudinary.com/dsrrvz65s/image/upload/v1758534432/home_wdp2p4.png")`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           display: "flex",
