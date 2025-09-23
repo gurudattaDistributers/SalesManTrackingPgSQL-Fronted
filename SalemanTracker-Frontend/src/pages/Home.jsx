@@ -81,9 +81,9 @@ const Home = () => {
                 color: "#333",
               }}
             >
-              📞 9921141312
+              📞 9921141312 | 📍 Pune
             </Typography>
-            <Typography
+            {/* <Typography
               sx={{
                 fontSize: { xs: "0.8rem", sm: "0.9rem" },
                 fontWeight: "bold",
@@ -91,7 +91,7 @@ const Home = () => {
               }}
             >
               📍 Pune
-            </Typography>
+            </Typography> */}
           </Box>
         </Toolbar>
       </AppBar>

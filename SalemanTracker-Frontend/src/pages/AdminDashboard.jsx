@@ -394,24 +394,30 @@ const AdminDashboard = () => {
           position: "relative",
         }}
       >
-        <Box
+       <Box
+  sx={{
+    position: "absolute",
+    top: { xs: "8px", md: 0 },
+    right: { xs: "8px", md: 0 },
+  }}
+      >
+        <Button
+          size="small"
+          variant="outlined"
+          color="error"
           sx={{
-            position: "absolute",
-            top: 0,
-            right: 0,
+            fontSize: { xs: "0.75rem", md: "0.875rem" },
+            padding: { xs: "4px 10px", md: "6px 16px" },
+          }}
+          onClick={() => {
+            logout();
+            navigate("/");
           }}
         >
-          <Button
-            variant="outlined"
-            color="error"
-            onClick={() => {
-              logout(); // call API / clear token
-              navigate("/"); 
-            }}
-          >
-            Logout
-          </Button>
-        </Box>
+          Logout
+        </Button>
+      </Box>
+
 
         <Typography
           variant="h3"
