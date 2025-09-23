@@ -19,6 +19,7 @@ import {
   Typography,
   LinearProgress,
   CircularProgress,
+  IconButton,
 } from "@mui/material";
 import {
   BarChart,
@@ -41,6 +42,7 @@ import {
   PendingActions,
   Groups,
   EmojiEvents,
+  LogoutIcon,
 } from "@mui/icons-material";
 import {
   getAllCustomers,
@@ -401,16 +403,17 @@ const AdminDashboard = () => {
             right: 0,
           }}
         >
-          <Button
-            variant="outlined"
-            color="error"
-            onClick={() => {
-              logout(); // call API / clear token
-              navigate("/"); 
-            }}
-          >
-            Logout
-          </Button>
+         <Tooltip title="Logout">
+  <IconButton
+    color="error"
+    onClick={() => {
+      logout();
+      navigate("/");
+    }}
+  >
+    <LogoutIcon />
+  </IconButton>
+</Tooltip>
         </Box>
 
         <Typography
