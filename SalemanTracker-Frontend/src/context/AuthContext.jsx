@@ -15,8 +15,8 @@ export const AuthProvider = ({ children }) => {
 
   const hasAuthCookie = () => {
     // ✅ simple cookie check to avoid useless 401s
-    return document.cookie.split("; ").some((row) =>
-      row.startsWith("authToken") // replace with your real cookie name
+    return document.cookie.split("; ").some(
+      (row) => row.startsWith("authToken") // replace with your real cookie name
     );
   };
 
