@@ -269,7 +269,7 @@ const SalesmanInfo = () => {
       </Box>
 
       {/* Salesmen Cards */}
-      <Grid container spacing={3} justifyContent="center">
+      <Grid container spacing={4} justifyContent="center">
         {filteredSalesmen.length === 0 ? (
           <Grid item xs={12}>
             <Typography
@@ -287,8 +287,8 @@ const SalesmanInfo = () => {
               <Card
                 sx={{
                   borderRadius: 3,
-                  width: "100%",
-                  height: 480,
+                  width: 260,
+                  height: 360,
                   display: "flex",
                   flexDirection: "column",
                   bgcolor: "background.paper",
