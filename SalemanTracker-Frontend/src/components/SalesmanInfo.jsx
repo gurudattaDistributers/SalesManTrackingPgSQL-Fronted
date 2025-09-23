@@ -269,7 +269,7 @@ const SalesmanInfo = () => {
       </Box>
 
       {/* Salesmen Cards */}
-      <Grid container spacing={2} alignItems="stretch">
+      <Grid container spacing={3} justifyContent="center">
         {filteredSalesmen.length === 0 ? (
           <Grid item xs={12}>
             <Typography
@@ -287,8 +287,8 @@ const SalesmanInfo = () => {
               <Card
                 sx={{
                   borderRadius: 3,
-                  width: "100",
-                  height: "auto",
+                  width: "100%",
+                  height: 480,
                   display: "flex",
                   flexDirection: "column",
                   bgcolor: "background.paper",
@@ -331,7 +331,7 @@ const SalesmanInfo = () => {
                     component="img"
                     image={s.images[0].imageUrl}
                     sx={{
-                      height: 180,
+                      height: 160,
                       width: "100%",
                       objectFit: "cover",
                       cursor: "pointer",
@@ -340,7 +340,7 @@ const SalesmanInfo = () => {
                   />
                 ) : (
                   <Box
-                    height={180}
+                    height={160}
                     display="flex"
                     alignItems="center"
                     justifyContent="center"
