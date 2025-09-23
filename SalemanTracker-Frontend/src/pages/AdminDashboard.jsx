@@ -379,61 +379,56 @@ const AdminDashboard = () => {
   }
 
   return (
-   <Container maxWidth="xl" sx={{ mt: 4, mb: 6 }}>
-  {err && (
-    <Alert severity="error" sx={{ mb: 2 }}>
-      {err}
-    </Alert>
-  )}
+    <Container maxWidth="xl" sx={{ mt: 4, mb: 6 }}>
+      {err && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {err}
+        </Alert>
+      )}
 
-  {/* ---- Header ---- */}
-  <Box sx={{ mb: 4 }}>
-    {/* Top row: Logout button aligned right */}
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "flex-end",
-        mb: 2,
-      }}
-    >
-      <Button
-        size="small"
-        variant="outlined"
-        color="error"
+      {/* ---- Header ---- */}
+      <Box
         sx={{
-          fontSize: { xs: "0.75rem", md: "0.875rem" },
-          padding: { xs: "4px 10px", md: "6px 16px" },
-        }}
-        onClick={() => {
-          logout();
-          navigate("/");
+          textAlign: "center",
+          mb: 4,
+          position: "relative",
         }}
       >
-        Logout
-      </Button>
-    </Box>
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+          }}
+        >
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={() => {
+              logout(); // call API / clear token
+              navigate("/"); 
+            }}
+          >
+            Logout
+          </Button>
+        </Box>
 
-    {/* Title & subtitle centered */}
-    <Box sx={{ textAlign: "center" }}>
-      <Typography
-        variant="h3"
-        fontWeight={1000}
-        gutterBottom
-        sx={{ color: "#d07e03ff" }}
-      >
-        GURUDATTA DISTRIBUTER'S
-      </Typography>
+        <Typography
+          variant="h3"
+          fontWeight={1000}
+          gutterBottom
+          sx={{ color: "#d07e03ff" }}
+        >
+          GURUDATTA DISTRIBUTER'S
+        </Typography>
 
-      <Typography variant="h5" fontWeight={700} gutterBottom>
-        📊 Admin Dashboard
-      </Typography>
-
-      <Typography variant="body1" color="text.secondary">
-        Monitor orders, track performance, and view trends
-      </Typography>
-    </Box>
-  </Box>
-</Container>
+        <Typography variant="h5" fontWeight={700} gutterBottom>
+          📊 Admin Dashboard
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          Monitor orders, track performance, and view trends
+        </Typography>
+      </Box>
 
       {/* ---- Filter Bar ---- */}
       <Paper
