@@ -415,7 +415,7 @@ const AdminDashboard = () => {
 
         <Typography
           variant="h3"
-          fontWeight={1000}
+          fontWeight={100}
           gutterBottom
           sx={{ color: "#d07e03ff" }}
         >
