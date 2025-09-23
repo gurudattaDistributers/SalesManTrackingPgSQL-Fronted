@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import LogoutIcon from "@mui/icons-material/Logout";
 import {
   Alert,
   Box,
@@ -18,8 +19,9 @@ import {
   TextField,
   Typography,
   LinearProgress,
-  CircularProgress,
   IconButton,
+  Tooltip,
+  CircularProgress,
 } from "@mui/material";
 import {
   BarChart,
@@ -29,7 +31,7 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
+  Tooltip as RechartsTooltip,
   Legend,
   ResponsiveContainer,
   PieChart,
@@ -42,7 +44,6 @@ import {
   PendingActions,
   Groups,
   EmojiEvents,
-  LogoutIcon,
 } from "@mui/icons-material";
 import {
   getAllCustomers,
@@ -382,56 +383,60 @@ const AdminDashboard = () => {
 
   return (
     <Container maxWidth="xl" sx={{ mt: 4, mb: 6 }}>
-      {err && (
-        <Alert severity="error" sx={{ mb: 2 }}>
-          {err}
-        </Alert>
-      )}
+  {err && (
+    <Alert severity="error" sx={{ mb: 2 }}>
+      {err}
+    </Alert>
+  )}
 
-      {/* ---- Header ---- */}
-      <Box
-        sx={{
-          textAlign: "center",
-          mb: 4,
-          position: "relative",
-        }}
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-          }}
-        >
-         <Tooltip title="Logout">
-  <IconButton
-    color="error"
-    onClick={() => {
-      logout();
-      navigate("/");
+  {/* ---- Header ---- */}
+  <Box
+    sx={{
+      textAlign: "center",
+      mb: 4,
+      position: "relative",
     }}
   >
-    <LogoutIcon />
-  </IconButton>
-</Tooltip>
-        </Box>
-
-        <Typography
-          variant="h4"
-          fontWeight={700}
-          gutterBottom
-          sx={{ color: "#d07e03ff" }}
+    {/* Logout Icon (top right) */}
+    <Box
+      sx={{
+        position: "absolute",
+        top: 0,
+        right: 0,
+      }}
+    >
+      <Tooltip title="Logout">
+        <IconButton
+          color="error"
+          onClick={() => {
+            logout(); // clear token / API call
+            navigate("/");
+          }}
         >
-          GURUDATTA DISTRIBUTER'S
-        </Typography>
+          <LogoutIcon />
+        </IconButton>
+      </Tooltip>
+    </Box>
 
-        <Typography variant="h5" fontWeight={700} gutterBottom>
-          📊 Admin Dashboard
-        </Typography>
-        <Typography variant="body1" color="text.secondary">
-          Monitor orders, track performance, and view trends
-        </Typography>
-      </Box>
+    {/* Title + Subtitles */}
+    <Typography
+      variant="h4"
+      fontWeight={700}
+      gutterBottom
+      sx={{ color: "#d07e03ff" }}
+    >
+      GURUDATTA DISTRIBUTER'S
+    </Typography>
+
+    <Typography variant="h5" fontWeight={700} gutterBottom>
+      📊 Admin Dashboard
+    </Typography>
+
+    <Typography variant="body1" color="text.secondary">
+      Monitor orders, track performance, and view trends
+    </Typography>
+  </Box>
+
 
       {/* ---- Filter Bar ---- */}
       <Paper
@@ -693,7 +698,7 @@ const AdminDashboard = () => {
           </Typography>
           <ResponsiveContainer width="100%" height={220}>
             <PieChart>
-              <Tooltip content={<DonutTooltip />} />
+              <RechartsTooltip content={<DonutTooltip />} />
               <Pie
                 data={donutData}
                 dataKey="value"
@@ -721,7 +726,7 @@ const AdminDashboard = () => {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="day" />
                 <YAxis />
-                <Tooltip />
+                <RechartsTooltip/>
                 <Line
                   type="monotone"
                   dataKey="orders"
@@ -752,7 +757,7 @@ const AdminDashboard = () => {
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis type="number" />
                   <YAxis type="category" dataKey="salesman" width={220} />
-                  <Tooltip content={<SalesmanTooltip />} />
+                  <RechartsTooltip content={<SalesmanTooltip />} />
                   <Bar
                     dataKey="orders"
                     fill={COLORS.completed}
@@ -811,7 +816,7 @@ const AdminDashboard = () => {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="month" />
                 <YAxis />
-                <Tooltip />
+                <RechartsTooltip />
                 <Legend />
                 <Bar
                   dataKey="Pending"
