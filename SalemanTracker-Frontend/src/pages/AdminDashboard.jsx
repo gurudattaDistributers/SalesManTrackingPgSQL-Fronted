@@ -379,62 +379,61 @@ const AdminDashboard = () => {
   }
 
   return (
-    <Container maxWidth="xl" sx={{ mt: 4, mb: 6 }}>
-      {err && (
-        <Alert severity="error" sx={{ mb: 2 }}>
-          {err}
-        </Alert>
-      )}
+   <Container maxWidth="xl" sx={{ mt: 4, mb: 6 }}>
+  {err && (
+    <Alert severity="error" sx={{ mb: 2 }}>
+      {err}
+    </Alert>
+  )}
 
-      {/* ---- Header ---- */}
-      <Box
+  {/* ---- Header ---- */}
+  <Box sx={{ mb: 4 }}>
+    {/* Top row: Logout button aligned right */}
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "flex-end",
+        mb: 2,
+      }}
+    >
+      <Button
+        size="small"
+        variant="outlined"
+        color="error"
         sx={{
-          textAlign: "center",
-          mb: 4,
-          position: "relative",
+          fontSize: { xs: "0.75rem", md: "0.875rem" },
+          padding: { xs: "4px 10px", md: "6px 16px" },
+        }}
+        onClick={() => {
+          logout();
+          navigate("/");
         }}
       >
-       <Box
-  sx={{
-    position: "absolute",
-    top: { xs: "8px", md: 0 },
-    right: { xs: "8px", md: 0 },
-  }}
+        Logout
+      </Button>
+    </Box>
+
+    {/* Title & subtitle centered */}
+    <Box sx={{ textAlign: "center" }}>
+      <Typography
+        variant="h3"
+        fontWeight={1000}
+        gutterBottom
+        sx={{ color: "#d07e03ff" }}
       >
-        <Button
-          size="small"
-          variant="outlined"
-          color="error"
-          sx={{
-            fontSize: { xs: "0.75rem", md: "0.875rem" },
-            padding: { xs: "4px 10px", md: "6px 16px" },
-          }}
-          onClick={() => {
-            logout();
-            navigate("/");
-          }}
-        >
-          Logout
-        </Button>
-      </Box>
+        GURUDATTA DISTRIBUTER'S
+      </Typography>
 
+      <Typography variant="h5" fontWeight={700} gutterBottom>
+        📊 Admin Dashboard
+      </Typography>
 
-        <Typography
-          variant="h3"
-          fontWeight={1000}
-          gutterBottom
-          sx={{ color: "#d07e03ff" }}
-        >
-          GURUDATTA DISTRIBUTER'S
-        </Typography>
-
-        <Typography variant="h5" fontWeight={700} gutterBottom>
-          📊 Admin Dashboard
-        </Typography>
-        <Typography variant="body1" color="text.secondary">
-          Monitor orders, track performance, and view trends
-        </Typography>
-      </Box>
+      <Typography variant="body1" color="text.secondary">
+        Monitor orders, track performance, and view trends
+      </Typography>
+    </Box>
+  </Box>
+</Container>
 
       {/* ---- Filter Bar ---- */}
       <Paper
