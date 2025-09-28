@@ -21,12 +21,9 @@ import {
   Box,
   Snackbar,
   Alert,
-  Close, 
-  Download, 
-  ArrowBackIos, 
-  ArrowForwardIos,
 } from "@mui/material";
-import { Delete, Edit, ArrowBack } from "@mui/icons-material";
+import { Delete, Edit, ArrowBack,Close, Download, ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
+
 import {
   getAllCustomers,
   getCustomerImages,
@@ -567,7 +564,8 @@ const CustomerInfo = () => {
             if (!images || images.length <= 1) return;
 
             const threshold = 50; // swipe threshold
-            const diffX = dragStart.current.x - (dragStart.current.scrollLeft - containerRef.current.scrollLeft);
+            const diffX = dragStart.current.x - endTouchX;
+
             if (diffX > threshold) {
               // next image
               const nextIndex = (selectedImage.index + 1) % images.length;
