@@ -427,6 +427,8 @@ const handleTouchEnd = (e) => {
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
+          onTouchStart={handleTouchStart} 
+          onTouchEnd={handleTouchEnd}
           sx={{
             position: "fixed",
             inset: 0,
@@ -438,7 +440,7 @@ const handleTouchEnd = (e) => {
           }}
         >
           {/* Controls */}
-          <Box position="absolute" top={20} right={20} display="flex" gap={2}  onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+          <Box position="absolute" top={20} right={20} display="flex" gap={2}>
             <IconButton onClick={resetView} sx={{ color: "white" }}>
               <RestartAlt />
             </IconButton>
