@@ -56,6 +56,29 @@ const SalesmanInfo = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const navigate = useNavigate();
+  const [touchStartX, setTouchStartX] = useState(null);
+const handleTouchStart = (e) => {
+  setTouchStartX(e.touches[0].clientX);
+};
+
+const handleTouchEnd = (e) => {
+  if (touchStartX === null) return;
+  const touchEndX = e.changedTouches[0].clientX;
+  const diffX = touchStartX - touchEndX;
+
+  const threshold = 50; // px to qualify as swipe
+  if (Math.abs(diffX) > threshold) {
+    if (diffX > 0) {
+      // swipe left
+      nextImage();
+    } else {
+      // swipe right
+      prevImage();
+    }
+  }
+  setTouchStartX(null);
+};
+
 
   // Fetch Salesmen + Images
   useEffect(() => {
@@ -415,7 +438,7 @@ const SalesmanInfo = () => {
           }}
         >
           {/* Controls */}
-          <Box position="absolute" top={20} right={20} display="flex" gap={2}>
+          <Box position="absolute" top={20} right={20} display="flex" gap={2}  onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
             <IconButton onClick={resetView} sx={{ color: "white" }}>
               <RestartAlt />
             </IconButton>
