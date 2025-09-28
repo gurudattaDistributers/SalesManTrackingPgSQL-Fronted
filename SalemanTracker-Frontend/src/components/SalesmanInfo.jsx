@@ -97,7 +97,7 @@ const handleTouchEnd = (e) => {
             }
           })
         );
-        setSalesmen(salesmenWithImages);
+        setSalesmen(salesmenWithImages.reverse());
       } catch (error) {
         setSnackbar({
           open: true,
