@@ -59,39 +59,46 @@ const CustomerInfo = () => {
   const dragStart = useRef({ x: 0, y: 0, scrollLeft: 0, scrollTop: 0 });
 
   useEffect(() => {
-    const fetchCustomers = async () => {
-      try {
-        const res = await getAllCustomers();
-        setCustomers(res.data);
-        setFilteredCustomers(res.data);
+  const fetchCustomers = async () => {
+    try {
+      const res = await getAllCustomers();
 
-        const imageFetches = await Promise.all(
-          res.data.map(async (customer) => {
-            const imageRes = await getCustomerImages(customer.customerId);
-            return { customerId: customer.customerId, images: imageRes.data };
-          })
-        );
+      // 🔹 Sort by CreatedAt: newest first
+      const sortedCustomers = res.data.sort(
+        (a, b) => new Date(b.CreatedAt) - new Date(a.CreatedAt)
+      );
 
-        const imagesByCustomer = {};
-        imageFetches.forEach(({ customerId, images }) => {
-          imagesByCustomer[customerId] = images;
-        });
+      setCustomers(sortedCustomers);
+      setFilteredCustomers(sortedCustomers);
 
-        setImagesMap(imagesByCustomer);
-      } catch (error) {
-        console.error("Error fetching customers:", error);
-        setSnackbar({
-          open: true,
-          message: "Failed to load customers.",
-          severity: "error",
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
+      const imageFetches = await Promise.all(
+        sortedCustomers.map(async (customer) => {
+          const imageRes = await getCustomerImages(customer.customerId);
+          return { customerId: customer.customerId, images: imageRes.data };
+        })
+      );
 
-    fetchCustomers();
-  }, []);
+      const imagesByCustomer = {};
+      imageFetches.forEach(({ customerId, images }) => {
+        imagesByCustomer[customerId] = images;
+      });
+
+      setImagesMap(imagesByCustomer);
+    } catch (error) {
+      console.error("Error fetching customers:", error);
+      setSnackbar({
+        open: true,
+        message: "Failed to load customers.",
+        severity: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchCustomers();
+}, []);
+
 
   // 🔹 Global search
   useEffect(() => {
