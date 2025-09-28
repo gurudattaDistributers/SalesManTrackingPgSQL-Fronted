@@ -21,6 +21,10 @@ import {
   Box,
   Snackbar,
   Alert,
+  Close, 
+  Download, 
+  ArrowBackIos, 
+  ArrowForwardIos,
 } from "@mui/material";
 import { Delete, Edit, ArrowBack } from "@mui/icons-material";
 import {
@@ -29,6 +33,7 @@ import {
   deleteAllCustomerimages,
   deleteCustomer,
 } from "../services/authService";
+import { motion, AnimatePresence } from "framer-motion";
 
 const CustomerInfo = () => {
   const [customers, setCustomers] = useState([]);
@@ -425,78 +430,181 @@ const CustomerInfo = () => {
 
       {/* Image Dialog */}
       <Dialog
-        open={Boolean(selectedImage)}
-        onClose={() => setSelectedImage(null)}
-        fullScreen
-        PaperProps={{
-          style: { backgroundColor: "#000" },
-        }}
-      >
-        <DialogContent
-          sx={{
-            width: "100%",
-            height: "100%",
-            p: 0,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            overflow: "hidden",
-            backgroundColor: "#000",
-            touchAction: "none",
+  open={Boolean(selectedImage)}
+  onClose={() => setSelectedImage(null)}
+  fullScreen
+  PaperProps={{ style: { backgroundColor: "#000" } }}
+>
+  <DialogContent
+    sx={{
+      width: "100%",
+      height: "100%",
+      p: 0,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      overflow: "hidden",
+      backgroundColor: "#000",
+      position: "relative",
+      touchAction: "none",
+    }}
+  >
+    {selectedImage && (
+      <>
+        {/* Close Icon */}
+        <IconButton
+          sx={{ position: "absolute", top: 16, right: 16, color: "#fff", zIndex: 2 }}
+          onClick={() => setSelectedImage(null)}
+        >
+          <Close />
+        </IconButton>
+
+        {/* Download Icon */}
+        <IconButton
+          sx={{ position: "absolute", top: 16, right: 64, color: "#fff", zIndex: 2 }}
+          onClick={() => {
+            const link = document.createElement("a");
+            link.href = selectedImage.url;
+            link.download = `customer_image_${selectedImage.index + 1}.jpg`;
+            link.click();
           }}
         >
-          {selectedImage && (
-            <div
-              ref={containerRef}
+          <Download />
+        </IconButton>
+
+        {/* Arrow Navigation */}
+        {imagesMap[selectedImage.customerId]?.length > 1 && (
+          <>
+            <IconButton
+              sx={{
+                position: "absolute",
+                left: 16,
+                top: "50%",
+                transform: "translateY(-50%)",
+                color: "#fff",
+                zIndex: 2,
+                display: { xs: "none", md: "flex" },
+              }}
+              onClick={() => {
+                const currentIndex = selectedImage.index;
+                const images = imagesMap[selectedImage.customerId];
+                const prevIndex = (currentIndex - 1 + images.length) % images.length;
+                setSelectedImage((prev) => ({
+                  ...prev,
+                  url: images[prevIndex].imageUrl,
+                  index: prevIndex,
+                  scale: 1,
+                }));
+              }}
+            >
+              <ArrowBackIos />
+            </IconButton>
+
+            <IconButton
+              sx={{
+                position: "absolute",
+                right: 16,
+                top: "50%",
+                transform: "translateY(-50%)",
+                color: "#fff",
+                zIndex: 2,
+                display: { xs: "none", md: "flex" },
+              }}
+              onClick={() => {
+                const currentIndex = selectedImage.index;
+                const images = imagesMap[selectedImage.customerId];
+                const nextIndex = (currentIndex + 1) % images.length;
+                setSelectedImage((prev) => ({
+                  ...prev,
+                  url: images[nextIndex].imageUrl,
+                  index: nextIndex,
+                  scale: 1,
+                }));
+              }}
+            >
+              <ArrowForwardIos />
+            </IconButton>
+          </>
+        )}
+
+        {/* Swipeable Image Container */}
+        <div
+          ref={containerRef}
+          style={{ width: "100%", height: "100%", overflow: "hidden", cursor: "grab" }}
+          onWheel={(e) => {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? -0.15 : 0.15;
+            setSelectedImage((prev) => {
+              const newScale = Math.min(Math.max((prev.scale || 1) + delta, 0.5), 6);
+              return { ...prev, scale: newScale };
+            });
+          }}
+          onMouseDown={handleMouseDown}
+          onMouseLeave={handleMouseLeaveOrUp}
+          onMouseUp={handleMouseLeaveOrUp}
+          onMouseMove={handleMouseMove}
+          onTouchStart={(e) => {
+            if (e.touches.length === 1) {
+              isDragging.current = true;
+              dragStart.current = {
+                x: e.touches[0].pageX,
+                y: e.touches[0].pageY,
+                scrollLeft: containerRef.current.scrollLeft,
+                scrollTop: containerRef.current.scrollTop,
+              };
+            }
+          }}
+          onTouchMove={(e) => {
+            if (!isDragging.current || e.touches.length !== 1) return;
+            const walkX = e.touches[0].pageX - dragStart.current.x;
+            containerRef.current.scrollLeft = dragStart.current.scrollLeft - walkX;
+          }}
+          onTouchEnd={() => {
+            isDragging.current = false;
+
+            // Swipe Detection
+            const images = imagesMap[selectedImage.customerId];
+            if (!images || images.length <= 1) return;
+
+            const threshold = 50; // swipe threshold
+            const diffX = dragStart.current.x - (dragStart.current.scrollLeft - containerRef.current.scrollLeft);
+            if (diffX > threshold) {
+              // next image
+              const nextIndex = (selectedImage.index + 1) % images.length;
+              setSelectedImage((prev) => ({ ...prev, url: images[nextIndex].imageUrl, index: nextIndex, scale: 1 }));
+            } else if (diffX < -threshold) {
+              // previous image
+              const prevIndex = (selectedImage.index - 1 + images.length) % images.length;
+              setSelectedImage((prev) => ({ ...prev, url: images[prevIndex].imageUrl, index: prevIndex, scale: 1 }));
+            }
+          }}
+        >
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={selectedImage.url}
+              src={selectedImage.url}
+              alt="Zoomable"
+              initial={{ x: 300, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -300, opacity: 0 }}
+              transition={{ duration: 0.3 }}
               style={{
                 width: "100%",
                 height: "100%",
-                overflow: "hidden",
-                cursor: "grab",
+                objectFit: "contain",
+                transform: `scale(${selectedImage.scale || 1})`,
+                transformOrigin: "center",
+                userSelect: "none",
+                pointerEvents: "none",
               }}
-              onWheel={(e) => {
-                e.preventDefault();
-                const delta = e.deltaY > 0 ? -0.15 : 0.15;
-                setSelectedImage((prev) => {
-                  const newScale = Math.min(
-                    Math.max((prev.scale || 1) + delta, 0.5),
-                    6
-                  );
-                  return { ...prev, scale: newScale };
-                });
-              }}
-              onMouseDown={handleMouseDown}
-              onMouseLeave={handleMouseLeaveOrUp}
-              onMouseUp={handleMouseLeaveOrUp}
-              onMouseMove={handleMouseMove}
-            >
-              <img
-                src={selectedImage.url}
-                alt="Zoomable"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "contain",
-                  transform: `scale(${selectedImage.scale || 1})`,
-                  transformOrigin: "center",
-                  transition: isDragging.current
-                    ? "none"
-                    : "transform 0.05s ease-out",
-                  userSelect: "none",
-                  pointerEvents: "none",
-                }}
-                draggable={false}
-              />
-            </div>
-          )}
-        </DialogContent>
-
-        <DialogActions sx={{ backgroundColor: "#000" }}>
-          <Button sx={{ color: "#fff" }} onClick={() => setSelectedImage(null)}>
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
+              draggable={false}
+            />
+          </AnimatePresence>
+        </div>
+      </>
+    )}
+  </DialogContent>
+</Dialog>
 
       {/* Confirmation Dialog */}
       <Dialog
