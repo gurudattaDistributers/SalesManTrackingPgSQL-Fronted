@@ -212,6 +212,26 @@ const CustomerInfo = () => {
     containerRef.current.scrollTop = dragStart.current.scrollTop - walkY;
   };
 
+  const handleDownload = async (url, index) => {
+  try {
+    const response = await fetch(url, { mode: "cors" }); // fetch remote image
+    const blob = await response.blob(); // convert to blob
+    const blobUrl = window.URL.createObjectURL(blob); // create temporary URL
+
+    const link = document.createElement("a");
+    link.href = blobUrl;
+    link.download = `customer_image_${index + 1}.jpg`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    window.URL.revokeObjectURL(blobUrl); // clean up
+  } catch (err) {
+    console.error("Download failed", err);
+  }
+};
+
+
   return (
     <Container sx={{ mt: 4, mb: 4 }}>
       {/* Back Button */}
@@ -458,16 +478,11 @@ const CustomerInfo = () => {
 
         {/* Download Icon */}
         <IconButton
-          sx={{ position: "absolute", top: 16, right: 64, color: "#fff", zIndex: 2 }}
-          onClick={() => {
-            const link = document.createElement("a");
-            link.href = selectedImage.url;
-            link.download = `customer_image_${selectedImage.index + 1}.jpg`;
-            link.click();
-          }}
-        >
-          <Download />
+              sx={{ position: "absolute", top: 16, right: 64, color: "#fff", zIndex: 2 }}
+              onClick={() => handleDownload(selectedImage.url, selectedImage.index)}>
+              <Download />
         </IconButton>
+
 
         {/* Arrow Navigation */}
         {imagesMap[selectedImage.customerId]?.length > 1 && (
