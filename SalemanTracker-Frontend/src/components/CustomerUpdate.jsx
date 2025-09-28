@@ -255,6 +255,7 @@ const CustomerUpdate = () => {
               value={formData.SalesmanPin}
               onChange={handleChange}
               required
+              InputProps={{ readOnly: true }}
             />
 
             {/* Existing Images */}
