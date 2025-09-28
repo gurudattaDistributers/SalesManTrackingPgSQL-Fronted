@@ -286,6 +286,10 @@ const CustomerInfo = () => {
                   Shop: {customer.shopName}
                 </Typography>
 
+                <Typography variant="subtitle2" color="primary" sx={{ mt: 0.5 }}>
+                    Salesman Pin: {customer.salesmanPin || "N/A"}
+                </Typography>
+
                 <Divider sx={{ my: 1 }} />
 
                 <Box sx={{ flex: 1, overflowY: "auto", pr: 1 }}>
